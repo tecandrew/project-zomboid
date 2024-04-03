@@ -1,4 +1,4 @@
-FROM ghcr.io/cyrale/linuxgsm:0.2.1
+FROM gameservermanagers/linuxgsm:ubuntu-22.04
 
 # Steam ports
 ENV STEAM_PORT_1=8766  \
@@ -19,9 +19,6 @@ ENV STEAM_PORT_1=8766  \
     SERVER_PORT=16261 \
     # Game UDP port to allow player to contact the server (by default : 10 players)
     PLAYER_PORTS=16262-16272
-
-# Switch to root to use apt-get
-USER root
 
 # Install dependencies
 RUN apt-get update && \
@@ -44,9 +41,6 @@ RUN [ -d /home/linuxgsm/Zomboid ] || mkdir -p /home/linuxgsm/Zomboid && \
 # Copy scripts
 COPY ./scripts/*.sh /
 RUN chmod +x /*.sh
-
-# Switch to the user steam
-USER linuxgsm
 
 # Make server port available to host : (10 slots)
 EXPOSE ${STEAM_PORT_1}/udp ${STEAM_PORT_2}/udp ${SERVER_PORT}/udp ${PLAYER_PORTS} ${RCON_PORT}
